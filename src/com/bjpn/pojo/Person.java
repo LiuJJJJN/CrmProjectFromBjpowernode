@@ -6,4 +6,6 @@ package com.bjpn.pojo;
  */
 public class Person {
     private Integer id;
+    private Integer name;
+
 }
