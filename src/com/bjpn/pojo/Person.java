@@ -8,6 +8,6 @@ import java.util.Date;
  */
 public class Person {
     private Integer id;
-
-    private Date date;
+    private String name;
+    private String address;
 }
