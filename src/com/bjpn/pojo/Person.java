@@ -5,5 +5,5 @@ package com.bjpn.pojo;
  * @author 刘嘉宁
  */
 public class Person {
-
+    private String name;
 }
