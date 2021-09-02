@@ -3,6 +3,8 @@ package com.bjpn.crm.settings.dao;
 import com.bjpn.crm.settings.domain.User;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * User用户表的DAO接口
  * @author 刘嘉宁
@@ -16,4 +18,9 @@ public interface UserDao {
      */
     User selectByLoginActAndLoginPwd(@Param("act") String loginAct, @Param("pwd") String loginPwd);
 
+    /**
+     * 获取所有用户信息的方法
+     * @return User表中所有信息
+     */
+    List<User> getUserList();
 }

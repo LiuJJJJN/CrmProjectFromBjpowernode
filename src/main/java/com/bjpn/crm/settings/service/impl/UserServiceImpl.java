@@ -7,6 +7,8 @@ import com.bjpn.crm.settings.service.UserService;
 import com.bjpn.crm.utils.DateTimeUtil;
 import com.bjpn.crm.utils.SqlSessionUtil;
 
+import java.util.List;
+
 public class UserServiceImpl implements UserService {
     //通过代理创建userDao实例
     private UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
@@ -40,5 +42,12 @@ public class UserServiceImpl implements UserService {
 
         //放行
         return user;
+    }
+
+    @Override
+    public List<User> getUserList() {
+        List<User> userList = userDao.getUserList();
+
+        return userList;
     }
 }
