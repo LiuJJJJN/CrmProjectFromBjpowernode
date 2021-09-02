@@ -30,6 +30,15 @@
 
         $(function () {
             $("#addBtn").click(function(){
+                $(".time").datetimepicker({
+                    minView:"month",
+                    language:"zh-CN",
+                    format:"yyyy-mm-dd",
+                    autoclose:true,
+                    todayBtn:true,
+                    pickerPosition:"bottom-left"
+                });
+
                 //获取所有者数据
                 $.ajax({
                     url:"getUserList.do",
@@ -42,11 +51,44 @@
                         $.each(resp, function(index, element){
                             html.append("<option value="+element.id+">"+element.name+"</option>");
                         });
+                        //设置默认所有者为当前登录用户
+                        $("#create-marketActivityOwner").val("${user.id}");
                     }
                 });
                 //打开模态窗口
                 $("#createActivityModal").modal("show");
 
+            });
+
+            //点击保存时执行添加操作
+            $("#saveBtn").click(function(){
+                $.ajax({
+                    url:"save.do",
+                    data:{
+                        "owner":$("#create-marketActivityOwner").val().trim(),
+                        "name":$("#create-marketActivityName").val().trim(),
+                        "startDate":$("#create-startTime").val().trim(),
+                        "endDate":$("#create-endTime").val().trim(),
+                        "cost":$("#create-cost").val().trim(),
+                        "description":$("#create-describe").val().trim()
+                    },
+                    type:"post",
+                    dataType:"json",
+                    success:function(resp){
+                        if (resp.success){
+                            //刷新市场活动列表
+
+                            //关闭模态窗口
+                            $("#createActivityModal").modal("hide");
+
+                            //清空模态窗口数据
+                            $("#activityAddForm")[0].reset();
+
+                        }else{
+                            alert("添加失败");
+                        }
+                    }
+                })
             });
 
         });
@@ -67,7 +109,7 @@
             </div>
             <div class="modal-body">
 
-                <form class="form-horizontal" role="form">
+                <form id="activityAddForm" class="form-horizontal" role="form">
 
                     <div class="form-group">
                         <label for="create-marketActivityOwner" class="col-sm-2 control-label">所有者<span
@@ -87,11 +129,11 @@
                     <div class="form-group">
                         <label for="create-startTime" class="col-sm-2 control-label">开始日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="create-startTime">
+                            <input type="text" class="form-control time" id="create-startTime">
                         </div>
                         <label for="create-endTime" class="col-sm-2 control-label">结束日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="create-endTime">
+                            <input type="text" class="form-control time" id="create-endTime">
                         </div>
                     </div>
                     <div class="form-group">
@@ -113,7 +155,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">保存</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal" id="saveBtn">保存</button>
             </div>
         </div>
     </div>
@@ -153,11 +195,11 @@
                     <div class="form-group">
                         <label for="edit-startTime" class="col-sm-2 control-label">开始日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-startTime" value="2020-10-10">
+                            <input type="text" class="form-control time" id="edit-startTime" value="2020-10-10">
                         </div>
                         <label for="edit-endTime" class="col-sm-2 control-label">结束日期</label>
                         <div class="col-sm-10" style="width: 300px;">
-                            <input type="text" class="form-control" id="edit-endTime" value="2020-10-20">
+                            <input type="text" class="form-control time" id="edit-endTime" value="2020-10-20">
                         </div>
                     </div>
 
@@ -218,13 +260,13 @@
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">开始日期</div>
-                        <input class="form-control" type="text" id="startTime"/>
+                        <input class="form-control time" type="text" id="startTime"/>
                     </div>
                 </div>
                 <div class="form-group">
                     <div class="input-group">
                         <div class="input-group-addon">结束日期</div>
-                        <input class="form-control" type="text" id="endTime">
+                        <input class="form-control time" type="text" id="endTime">
                     </div>
                 </div>
 

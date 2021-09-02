@@ -1,5 +1,8 @@
 package com.bjpn.crm.workbench.domain;
 
+import lombok.Data;
+
+@Data
 public class ActivityRemark {
     private String id;  //主键
     private String noteContent; //备注信息

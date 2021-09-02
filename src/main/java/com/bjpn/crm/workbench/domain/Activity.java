@@ -1,5 +1,8 @@
 package com.bjpn.crm.workbench.domain;
 
+import lombok.Data;
+
+@Data
 public class Activity {
     private String id;  //主键
     private String owner;   //所有者 user的id
