@@ -7,19 +7,19 @@ import com.bjpn.crm.utils.DateTimeUtil;
 import com.bjpn.crm.utils.PrintJson;
 import com.bjpn.crm.utils.ServiceFactory;
 import com.bjpn.crm.utils.UUIDUtil;
+import com.bjpn.crm.vo.PaginationVO;
 import com.bjpn.crm.workbench.domain.Activity;
 import com.bjpn.crm.workbench.service.ActivityService;
 import com.bjpn.crm.workbench.service.impl.ActivityServiceImpl;
-import org.apache.ibatis.session.SqlSessionFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
-import java.util.UUID;
+import java.util.Map;
 
 /**
  * Activity表对应的控制层、表示层
@@ -35,6 +35,32 @@ public class ActivityController extends HttpServlet {
         if ("/workbench/activity/save.do".equals(path)){
             save(request, response);
         }
+        if ("/workbench/activity/pageList.do".equals(path)){
+            pageList(request, response);
+        }
+    }
+
+    private void pageList(HttpServletRequest request, HttpServletResponse response) {
+        String pageNo = request.getParameter("pageNo");
+        String pageSize = request.getParameter("pageSize");
+        String name = request.getParameter("name");
+        String owner = request.getParameter("owner");
+        String startDate = request.getParameter("startDate");
+        String endDate = request.getParameter("endDate");
+
+        ActivityService service = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("pageNo", pageNo);
+        map.put("pageSize", pageSize);
+        map.put("name", name);
+        map.put("owner", owner);
+        map.put("startDate", startDate);
+        map.put("endDate", endDate);
+        PaginationVO vo = service.pageList(map);
+
+        PrintJson.printJsonObj(response, vo);
+
     }
 
     private void save(HttpServletRequest request, HttpServletResponse response) {
