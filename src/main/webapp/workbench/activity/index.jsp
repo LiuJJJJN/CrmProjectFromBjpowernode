@@ -13,22 +13,22 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <%--    <base href="<%=basePath%>">--%>
+    <base href="<%=basePath%>">
 
-    <link href="../../jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
-    <link href="../../jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css"
+    <link href="jquery/bootstrap_3.3.0/css/bootstrap.min.css" type="text/css" rel="stylesheet"/>
+    <link href="jquery/bootstrap-datetimepicker-master/css/bootstrap-datetimepicker.min.css" type="text/css"
           rel="stylesheet"/>
 
-    <script type="text/javascript" src="../../jquery/jquery-1.11.1-min.js"></script>
-    <script type="text/javascript" src="../../jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="jquery/jquery-1.11.1-min.js"></script>
+    <script type="text/javascript" src="jquery/bootstrap_3.3.0/js/bootstrap.min.js"></script>
     <script type="text/javascript"
-            src="../../jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
+            src="jquery/bootstrap-datetimepicker-master/js/bootstrap-datetimepicker.js"></script>
     <script type="text/javascript"
-            src="../../jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
+            src="jquery/bootstrap-datetimepicker-master/locale/bootstrap-datetimepicker.zh-CN.js"></script>
 
-    <link rel="stylesheet" type="text/css" href="/jquery/bs_pagination/jquery.bs_pagination.min.css"/>
-    <script type="text/javascript" src="/jquery/bs_pagination/jquery.bs_pagination.min.js"></script>
-    <script type="text/javascript" src="/jquery/bs_pagination/en.js"></script>
+    <link rel="stylesheet" type="text/css" href="jquery/bs_pagination/jquery.bs_pagination.min.css"/>
+    <script type="text/javascript" src="jquery/bs_pagination/jquery.bs_pagination.min.js"></script>
+    <script type="text/javascript" src="jquery/bs_pagination/en.js"></script>
 
     <script type="text/javascript">
 
@@ -48,6 +48,12 @@
 
             //点击查询时
             $("#searchBtn").click(function () {
+                //将查询内容存起来
+                $("#hidden-name").val($("#search-name").val());
+                $("#hidden-owner").val($("#search-owner").val());
+                $("#hidden-startDate").val($("#search-startDate").val());
+                $("#hidden-endDate").val($("#search-endDate").val());
+
                 pageList(1, 2);
             });
 
@@ -56,7 +62,7 @@
 
                 //获取所有者数据
                 $.ajax({
-                    url: "getUserList.do",
+                    url: "workbench/activity/getUserList.do",
                     data: "",
                     dataType: "json",
                     type: "get",
@@ -78,7 +84,7 @@
             //点击保存时执行添加操作
             $("#saveBtn").click(function () {
                 $.ajax({
-                    url: "save.do",
+                    url: "workbench/activity/save.do",
                     data: {
                         "owner": $("#create-marketActivityOwner").val().trim(),
                         "name": $("#create-marketActivityName").val().trim(),
@@ -107,6 +113,16 @@
                 })
             });
 
+            //点击全选时
+            $("#chooseAll").click(function(){
+                $(":checkbox:gt(0)").prop("checked", this.checked);
+            });
+
+            // 有效外层元素jq对象.on( "事件" , 需绑定元素的jq对象    , 回调函数)
+            $("#activityBody").on("click",$(":checkbox:gt(0)"), function (){
+                $("#chooseAll").prop("checked", $(":checkbox:gt(0)").length == $(":checkbox:gt(0):checked").length);
+            });
+
         });
 
         /**
@@ -115,8 +131,14 @@
          * @param pageSize 每页几条记录
          */
         function pageList(pageNo, pageSize) {
+            //将上次搜索的内容放到搜索框中搜索
+            $("#search-name").val($("#hidden-name").val());
+            $("#search-owner").val($("#hidden-owner").val());
+            $("#search-startDate").val($("#hidden-startDate").val());
+            $("#search-endDate").val($("#hidden-endDate").val());
+
             $.ajax({
-                url: "pageList.do",
+                url: "workbench/activity/pageList.do",
                 data: {
                     "pageNo": pageNo,
                     "pageSize": pageSize,
@@ -167,6 +189,12 @@
     </script>
 </head>
 <body>
+<%--隐藏域，用于记录上次搜索内容--%>
+<input type="hidden" id="hidden-name" />
+<input type="hidden" id="hidden-owner" />
+<input type="hidden" id="hidden-startDate" />
+<input type="hidden" id="hidden-endDate" />
+
 
 <!-- 创建市场活动的模态窗口 -->
 <div class="modal fade" id="createActivityModal" role="dialog">
@@ -361,7 +389,7 @@
             <table class="table table-hover">
                 <thead>
                 <tr style="color: #B3B3B3;">
-                    <td><input type="checkbox"/></td>
+                    <td><input type="checkbox" id="chooseAll"/></td>
                     <td>名称</td>
                     <td>所有者</td>
                     <td>开始日期</td>
