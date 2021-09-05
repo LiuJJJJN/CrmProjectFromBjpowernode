@@ -27,4 +27,18 @@ public interface ActivityService {
      * @return 删除成功的条数
      */
     boolean delete(String[] id);
+
+    /**
+     * 查询用户信息和id对应的活动列表
+     * @param id 活动id
+     * @return 用户名称信息和id对应的活动列表
+     */
+    Map<String, Object> getUserListAndActivity(String id);
+
+    /**
+     * 更新活动信息
+     * @param activity 活动信息
+     * @return 更新是否成功
+     */
+    Boolean update(Activity activity);
 }

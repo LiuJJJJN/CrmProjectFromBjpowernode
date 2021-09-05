@@ -54,4 +54,18 @@ public interface ActivityDao {
      * @return 删除成功条数
      */
     int delete(String[] ids);
+
+    /**
+     * 查询活动
+     * @param id 活动的id
+     * @return 活动
+     */
+    Activity getActivityById(String id);
+
+    /**
+     * 更新活动
+     * @param activity 活动信息
+     * @return 更新成功条数
+     */
+    int update(Activity activity);
 }

@@ -1,5 +1,6 @@
 package com.bjpn.crm.workbench.service.impl;
 
+import com.bjpn.crm.settings.dao.UserDao;
 import com.bjpn.crm.utils.SqlSessionUtil;
 import com.bjpn.crm.vo.PaginationVO;
 import com.bjpn.crm.workbench.dao.ActivityDao;
@@ -7,6 +8,7 @@ import com.bjpn.crm.workbench.dao.ActivityRemarkDao;
 import com.bjpn.crm.workbench.domain.Activity;
 import com.bjpn.crm.workbench.service.ActivityService;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ import java.util.Map;
 public class ActivityServiceImpl implements ActivityService {
     private ActivityDao activityDao = SqlSessionUtil.getSqlSession().getMapper(ActivityDao.class);
     private ActivityRemarkDao activityRemarkDao = SqlSessionUtil.getSqlSession().getMapper(ActivityRemarkDao.class);
-
+    private UserDao userDao = SqlSessionUtil.getSqlSession().getMapper(UserDao.class);
 
     @Override
     public Boolean save(Activity activity) {
@@ -68,5 +70,25 @@ public class ActivityServiceImpl implements ActivityService {
         }
 
         return flag;
+    }
+
+    @Override
+    public Map<String, Object> getUserListAndActivity(String id) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("uList", userDao.getUserList());
+        map.put("a", activityDao.getActivityById(id));
+
+        return map;
+    }
+
+    @Override
+    public Boolean update(Activity activity) {
+        int count = activityDao.update(activity);
+
+        if (count == 1){
+            return true;
+        }
+
+        return false;
     }
 }
