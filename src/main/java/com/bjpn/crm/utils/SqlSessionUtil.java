@@ -39,7 +39,7 @@ public class SqlSessionUtil {
 		
 		if(session==null){
 			
-			session = factory.openSession();
+			session = factory.openSession(true);
 			t.set(session);
 		}
 		

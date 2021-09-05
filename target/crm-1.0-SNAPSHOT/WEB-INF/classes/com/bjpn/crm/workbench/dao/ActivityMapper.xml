@@ -29,7 +29,7 @@
     </select>
 
     <select id="getActivityListByCondition" resultType="activity" parameterType="map">
-        select a.name, u.name as owner, a.startDate, a.endDate
+        select a.id, a.name, u.name as owner, a.startDate, a.endDate
         from crm.tbl_activity a
         join crm.tbl_user u on a.owner = u.id
         <where>
@@ -49,5 +49,13 @@
         order by a.createTime desc
         limit #{skipCount}, #{pageSize};
     </select>
+
+    <delete id="delete">
+        delete from crm.tbl_activity
+        where id in
+        <foreach collection="array" item="aid" open="(" close=")" separator=",">
+            #{aid}
+        </foreach>
+    </delete>
 
 </mapper>

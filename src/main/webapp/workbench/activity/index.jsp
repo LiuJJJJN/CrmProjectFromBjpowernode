@@ -131,6 +131,9 @@
          * @param pageSize 每页几条记录
          */
         function pageList(pageNo, pageSize) {
+            //将全选的勾干掉
+            $("#chooseAll").prop("checked", false);
+
             //将上次搜索的内容放到搜索框中搜索
             $("#search-name").val($("#hidden-name").val());
             $("#search-owner").val($("#hidden-owner").val());
@@ -155,7 +158,7 @@
                     $.each(resp.dataList, function (i, n) {
                         $("#activityBody").append('<tr class="active">' +
                             '<td><input type="checkbox" value="' + n.id + '"/></td>' +
-                            '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'detail.html\';">' + n.name + '</a></td>' +
+                            '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.html\';">' + n.name + '</a></td>' +
                             '<td>' + n.owner + '</td>' +
                             '<td>' + n.startDate + '</td>' +
                             '<td>' + n.endDate + '</td>' +
@@ -182,6 +185,36 @@
                         }
                     });
 
+                }
+            });
+
+            $("#deleteBtn").click(function(){
+                if($(":checkbox:gt(0):checked").length == 0){
+                    alert("请选中至少一条数据！");
+                }else{
+                    if(confirm("确认删除吗？")){
+                        //请求参数
+                        var param = "";
+                        $.each($(":checkbox:gt(0):checked"), function(i, n){
+
+                            param += "id="+n.value+"&"
+                        });
+                        param = param.substring(0, param.length-1);
+
+                        $.ajax({
+                            url:"workbench/activity/delete.do",
+                            data:param,
+                            type:"post",
+                            dataType:"json",
+                            success:function(resp){
+                                if(resp.success){
+                                    pageList(1, 2);
+                                }else{
+                                    alert("删除失败！");
+                                }
+                            }
+                        });
+                    }
                 }
             });
         }
@@ -382,7 +415,7 @@
                 <button type="button" class="btn btn-default" data-toggle="modal" data-target="#editActivityModal"><span
                         class="glyphicon glyphicon-pencil"></span> 修改
                 </button>
-                <button type="button" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
+                <button type="button" id="deleteBtn" class="btn btn-danger"><span class="glyphicon glyphicon-minus"></span> 删除</button>
             </div>
         </div>
         <div style="position: relative;top: 10px;">

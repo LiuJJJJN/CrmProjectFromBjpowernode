@@ -33,4 +33,25 @@ public interface ActivityDao {
      * @return 符合要求的数据
      */
     List<Activity> getActivityListByCondition(Map<String, Object> map);
+
+    /**
+     * 根据id删除记录
+     * @param s id值
+     * @return 删除成功的条数
+     */
+    int deleteById(String s);
+
+    /**
+     * 获取子表中删除关联数量
+     * @param ids 主键
+     * @return 数量
+     */
+    int getCountByAids(String[] ids);
+
+    /**
+     * 删除字表数据
+     * @param ids 主键
+     * @return 删除成功条数
+     */
+    int delete(String[] ids);
 }

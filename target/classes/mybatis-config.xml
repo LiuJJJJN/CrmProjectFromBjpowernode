@@ -32,6 +32,7 @@
     <!--    <mapper class="com.bjpn.crm.settings.dao.UserDao" />-->
     <mapper resource="com/bjpn/crm/settings/dao/UserMapper.xml" />
     <mapper resource="com/bjpn/crm/workbench/dao/ActivityMapper.xml" />
+    <mapper resource="com/bjpn/crm/workbench/dao/ActivityRemarkMapper.xml" />
   </mappers>
 
 </configuration>

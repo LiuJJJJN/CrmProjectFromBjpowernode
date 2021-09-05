@@ -11,6 +11,22 @@ import java.util.Map;
 
 public class ActivityDaoTest {
     @Test
+    public void testDeleteById() {
+        SqlSession sqlSession = null;
+        try {
+            sqlSession = SqlSessionUtil.getSqlSession();
+            ActivityDao mapper = sqlSession.getMapper(ActivityDao.class);
+
+            Integer totalByCondition = mapper.deleteById("5f627dd6e3ed41c88346ec21e38fda2f");
+            System.out.println(totalByCondition);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            sqlSession.close();
+        }
+    }
+
+    @Test
     public void testGetTotalByCondition() {
         SqlSession sqlSession = null;
         try {

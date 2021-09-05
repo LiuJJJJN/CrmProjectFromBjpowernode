@@ -20,4 +20,11 @@ public interface ActivityService {
      * @return 查询结果
      */
     PaginationVO pageList(Map<String, Object> map);
+
+    /**
+     * 删除活动
+     * @param id 按照id们删除
+     * @return 删除成功的条数
+     */
+    boolean delete(String[] id);
 }
