@@ -41,4 +41,11 @@ public interface ActivityService {
      * @return 更新是否成功
      */
     Boolean update(Activity activity);
+
+    /**
+     * 跳转至详情页面所需的数据
+     * @param id 活动的id
+     * @return 活动的内容
+     */
+    Activity detail(String id);
 }

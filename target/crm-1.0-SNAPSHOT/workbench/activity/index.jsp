@@ -213,8 +213,10 @@
                     success: function (resp) {
                         if (resp.success) {
                             //刷新市场活动列表
-                            //       维持在当前页                                                    维持每页记录数量
-                            pageList($("#activityPage").bs_pagination('getOption', 'currentPage') ,$("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
+                                     //维持在当前页
+                            pageList($("#activityPage").bs_pagination('getOption', 'currentPage') ,
+                                     //维持每页记录数量
+                                     $("#activityPage").bs_pagination('getOption', 'rowsPerPage'));
 
                             //关闭模态窗口
                             $("#editActivityModal").modal("hide");
@@ -260,7 +262,7 @@
                     $.each(resp.dataList, function (i, n) {
                         $("#activityBody").append('<tr class="active">' +
                             '<td><input type="checkbox" value="' + n.id + '"/></td>' +
-                            '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.html\';">' + n.name + '</a></td>' +
+                            '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.do?id='+n.id+'\';">' + n.name + '</a></td>' +
                             '<td>' + n.owner + '</td>' +
                             '<td>' + n.startDate + '</td>' +
                             '<td>' + n.endDate + '</td>' +

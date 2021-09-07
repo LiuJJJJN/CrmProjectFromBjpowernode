@@ -47,6 +47,19 @@ public class ActivityController extends HttpServlet {
         if ("/workbench/activity/update.do".equals(path)){
             update(request, response);
         }
+        if ("/workbench/activity/detail.do".equals(path)){
+            detail(request, response);
+        }
+    }
+
+    private void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        String id = request.getParameter("id");
+
+        ActivityService service = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+        Activity a = service.detail(id);
+        request.setAttribute("a", a);
+
+        request.getRequestDispatcher("/workbench/activity/detail.jsp").forward(request, response);
     }
 
     private void update(HttpServletRequest request, HttpServletResponse response) {

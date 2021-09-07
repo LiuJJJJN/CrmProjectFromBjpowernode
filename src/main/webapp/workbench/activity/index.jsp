@@ -262,7 +262,7 @@
                     $.each(resp.dataList, function (i, n) {
                         $("#activityBody").append('<tr class="active">' +
                             '<td><input type="checkbox" value="' + n.id + '"/></td>' +
-                            '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.html\';">' + n.name + '</a></td>' +
+                            '<td><a style="text-decoration: none; cursor: pointer;" onclick="window.location.href=\'workbench/activity/detail.do?id='+n.id+'\';">' + n.name + '</a></td>' +
                             '<td>' + n.owner + '</td>' +
                             '<td>' + n.startDate + '</td>' +
                             '<td>' + n.endDate + '</td>' +

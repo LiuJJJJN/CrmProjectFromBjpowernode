@@ -68,4 +68,11 @@ public interface ActivityDao {
      * @return 更新成功条数
      */
     int update(Activity activity);
+
+    /**
+     * 查询市场活动的详情
+     * @param id 市场活动的id
+     * @return 市场活动的详情，owner为姓名
+     */
+    Activity getDetailById(String id);
 }

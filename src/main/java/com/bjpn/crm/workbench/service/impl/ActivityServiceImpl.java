@@ -91,4 +91,13 @@ public class ActivityServiceImpl implements ActivityService {
 
         return false;
     }
+
+    @Override
+    public Activity detail(String id) {
+        Activity a = null;
+
+        a = activityDao.getDetailById(id);
+
+        return a;
+    }
 }
