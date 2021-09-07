@@ -74,4 +74,22 @@
         editBy = #{editBy}
         where id = #{id};
     </update>
+
+    <select id="getDetailById" resultType="activity">
+        select
+            u.name as owner,
+            a.name,
+            a.startDate,
+            a.endDate,
+            a.cost,
+            a.description,
+            a.createTime,
+            a.createBy,
+            a.editTime,
+            a.editBy
+        from crm.tbl_activity a
+        join crm.tbl_user u
+        on a.owner = u.id
+        where a.id = #{id};
+    </select>
 </mapper>
