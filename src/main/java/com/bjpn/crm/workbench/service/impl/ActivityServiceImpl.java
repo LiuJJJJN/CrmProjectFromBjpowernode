@@ -6,6 +6,7 @@ import com.bjpn.crm.vo.PaginationVO;
 import com.bjpn.crm.workbench.dao.ActivityDao;
 import com.bjpn.crm.workbench.dao.ActivityRemarkDao;
 import com.bjpn.crm.workbench.domain.Activity;
+import com.bjpn.crm.workbench.domain.ActivityRemark;
 import com.bjpn.crm.workbench.service.ActivityService;
 
 import java.util.HashMap;
@@ -99,5 +100,11 @@ public class ActivityServiceImpl implements ActivityService {
         a = activityDao.getDetailById(id);
 
         return a;
+    }
+
+    @Override
+    public List getRemarkListByAid(String id) {
+        List<ActivityRemark> list = activityRemarkDao.getRemarkListByAid(id);
+        return list;
     }
 }

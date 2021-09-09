@@ -3,6 +3,7 @@ package com.bjpn.crm.workbench.service;
 import com.bjpn.crm.vo.PaginationVO;
 import com.bjpn.crm.workbench.domain.Activity;
 
+import java.util.List;
 import java.util.Map;
 
 public interface ActivityService {
@@ -48,4 +49,11 @@ public interface ActivityService {
      * @return 活动的内容
      */
     Activity detail(String id);
+
+    /**
+     * 根据活动id获取活动的备注
+     * @param id 活动id
+     * @return 对应的备注列表
+     */
+    List getRemarkListByAid(String id);
 }

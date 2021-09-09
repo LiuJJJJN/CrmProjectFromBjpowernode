@@ -29,6 +29,7 @@ public class ActivityController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
+        System.out.println(path);
         if ("/workbench/activity/getUserList.do".equals(path)){
             getUserList(request, response);
         }
@@ -50,6 +51,20 @@ public class ActivityController extends HttpServlet {
         if ("/workbench/activity/detail.do".equals(path)){
             detail(request, response);
         }
+        if ("/workbench/activity/getRemarkListByAid.do".equals(path)){
+            getRemarkListByAid(request, response);
+        }
+    }
+
+    private void getRemarkListByAid(HttpServletRequest request, HttpServletResponse response) {
+        String id = request.getParameter("id");
+
+        System.out.println("id : "+id);
+
+        ActivityService service = (ActivityService) ServiceFactory.getService(new ActivityServiceImpl());
+
+        List list =  service.getRemarkListByAid(id);
+        PrintJson.printJsonObj(response, list);
     }
 
     private void detail(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {

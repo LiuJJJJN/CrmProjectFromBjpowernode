@@ -20,4 +20,9 @@
         </foreach>
     </delete>
 
+    <select id="getRemarkListByAid" resultType="activityRemark">
+        select * from crm.tbl_activity_remark
+        where activityId = #{aid};
+    </select>
+
 </mapper>

@@ -58,7 +58,32 @@
             $(".myHref").mouseout(function () {
                 $(this).children("span").css("color", "#E6E6E6");
             });
+
+            //页面加载完毕后，显示该页面的备注
+            showRemarkList();
         });
+
+        //显示该页面的备注
+        function showRemarkList(){
+            //使用ajax获取备注列表,更新页面备注信息
+            $.get("workbench/activity/getRemarkListByAid.do", "id=${a.id}", function (resp){
+                $.each(resp, function(i, n){
+                    $("#remarkBefore").after('' +
+                        '<div class="remarkDiv" style="height: 60px;">' +
+                        '<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">' +
+                        '<div style="position: relative; top: -40px; left: 40px;">' +
+                        '<h5>'+n.noteContent+'</h5>' +
+                        '<font color="gray">市场活动</font> ' +
+                        '<font color="gray">-</font> ' +
+                        '<b>${a.name}</b> <small style="color: gray;">'+(n.editFlag == 0?n.createTime:n.editTime)+' 由 '+(n.editFlag == 0?n.createBy:n.editBy)+'</small>' +
+                        '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;"><a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>' +
+                        '</div>' +
+                        '</div>' +
+                        '</div>'
+                    );
+                })
+            }, "json");
+        }
 
     </script>
 
@@ -230,43 +255,11 @@
 
 <!-- 备注 -->
 <div style="position: relative; top: 30px; left: 40px;">
-    <div class="page-header">
+    <div class="page-header" id="remarkBefore">
         <h4>备注</h4>
     </div>
 
-    <!-- 备注1 -->
-    <div class="remarkDiv" style="height: 60px;">
-        <img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">
-        <div style="position: relative; top: -40px; left: 40px;">
-            <h5>哎呦！</h5>
-            <font color="gray">市场活动</font> <font color="gray">-</font> <b>发传单</b> <small style="color: gray;">
-            2017-01-22 10:10:10 由zhangsan</small>
-            <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-            </div>
-        </div>
-    </div>
-
-    <!-- 备注2 -->
-    <div class="remarkDiv" style="height: 60px;">
-        <img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">
-        <div style="position: relative; top: -40px; left: 40px;">
-            <h5>呵呵！</h5>
-            <font color="gray">市场活动</font> <font color="gray">-</font> <b>发传单</b> <small style="color: gray;">
-            2017-01-22 10:20:10 由zhangsan</small>
-            <div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-                <a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove"
-                                                                   style="font-size: 20px; color: #E6E6E6;"></span></a>
-            </div>
-        </div>
-    </div>
+<%--    在此异步添加备注--%>
 
     <div id="remarkDiv" style="background-color: #E6E6E6; width: 870px; height: 90px;">
         <form role="form" style="position: relative;top: 10px; left: 10px;">
