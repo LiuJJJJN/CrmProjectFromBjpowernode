@@ -71,4 +71,11 @@ public interface ActivityService {
      * @return 是否添加成功
      */
     Boolean saveActivityRemark(ActivityRemark ar);
+
+    /**
+     * 修改活动的备注
+     * @param map 备注 id 与要修改的 noteContent
+     * @return 修改是否成功
+     */
+    Boolean editRemark(Map<String, Object> map);
 }

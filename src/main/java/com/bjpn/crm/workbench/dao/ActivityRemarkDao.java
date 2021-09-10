@@ -4,6 +4,7 @@ import com.bjpn.crm.workbench.domain.ActivityRemark;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * ActivityRemark表的DAO接口
@@ -45,4 +46,11 @@ public interface ActivityRemarkDao {
      * @return 添加成功的条数
      */
     int saveActivityRemark(ActivityRemark ar);
+
+    /**
+     * 修改备注
+     * @param map 备注 id 与要修改的 noteContent
+     * @return 修改成功的条数
+     */
+    int editRemark(Map<String, Object> map);
 }

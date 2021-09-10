@@ -87,12 +87,12 @@
                             '<div id="'+resp.ar.id+'" class="remarkDiv" style="height: 60px;">' +
                             '<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">' +
                             '<div style="position: relative; top: -40px; left: 40px;">' +
-                            '<h5>' + resp.ar.noteContent + '</h5>' +
+                            '<h5 id="e'+n.id+'">' + resp.ar.noteContent + '</h5>' +
                             '<font color="gray">市场活动</font> ' +
                             '<font color="gray">-</font> ' +
-                            '<b>${a.name}</b> <small style="color: gray;">' + (resp.ar.createTime) + ' 由 ' + (resp.ar.createBy) + '</small>' +
+                            '<b>${a.name}</b> <small style="color: gray;" id="s'+n.id+'">' + (resp.ar.createTime) + ' 由 ' + (resp.ar.createBy) + '</small>' +
                             '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">' +
-                            '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                            '<a class="myHref" href="javascript:void(0);" onclick="editRemark(\''+resp.ar.id+'\')"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
                             '<a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+resp.ar.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>' +
                             '</div>' +
                             '</div>' +
@@ -101,6 +101,33 @@
                         $("#remark").val("");
                     }else{
                         alert("删除失败！");
+                    }
+                }, "json");
+            });
+
+            //点击备注修改中的更新按钮时
+            $("#updateRemarkBtn").click(function (){
+                $.post("workbench/activity/editRemark.do", {
+                        "id": $("#remarkId").val(),
+                        "noteContent": $("#noteContent")[0].value,
+                        "editBy":"${user.name}"
+                    }
+                    , function (resp) {
+                    /*
+                        resp:
+                            {
+                                "success":"true/false
+                                "ar":{"id":xxx,....}
+                            }
+                     */
+                    if (resp.success){
+                        //暂时修改页面内容
+                        $("#e"+$("#remarkId").val()).text(resp.ar.noteContent);
+                        $("#s"+$("#remarkId").val()).text(resp.ar.editTime+" 由 "+resp.ar.editBy);
+                        //关闭修改备注的模态窗口
+                        $("#editRemarkModal").modal("hide");
+                    }else{
+                        alert("修改失败！");
                     }
                 }, "json");
             });
@@ -116,12 +143,12 @@
                         '<div id="'+n.id+'" class="remarkDiv" style="height: 60px;">' +
                         '<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">' +
                         '<div style="position: relative; top: -40px; left: 40px;">' +
-                        '<h5>' + n.noteContent + '</h5>' +
+                        '<h5 id="e'+n.id+'">' + n.noteContent + '</h5>' +
                         '<font color="gray">市场活动</font> ' +
                         '<font color="gray">-</font> ' +
-                        '<b>${a.name}</b> <small style="color: gray;">' + (n.editFlag == 0 ? n.createTime : n.editTime) + ' 由 ' + (n.editFlag == 0 ? n.createBy : n.editBy) + '</small>' +
+                        '<b>${a.name}</b> <small style="color: gray;" id="s'+n.id+'">' + (n.editFlag == 0 ? n.createTime : n.editTime) + ' 由 ' + (n.editFlag == 0 ? n.createBy : n.editBy) + '</small>' +
                         '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">' +
-                        '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '<a class="myHref" href="javascript:void(0);" onclick="editRemark(\''+n.id+'\')"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
                         '<a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+n.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>' +
                         '</div>' +
                         '</div>' +
@@ -131,6 +158,7 @@
             }, "json");
         }
 
+        //删除备注
         function deleteRemark(id){
             $.post("workbench/activity/deleteRemark.do", "id="+id, function (resp) {
                 /*
@@ -144,6 +172,21 @@
                 }
 
             }, "json");
+        }
+
+        //修改备注
+        function editRemark(id){
+            //将id存入模态窗口的隐藏域中，以便模态窗口打开后读取
+            $("#remarkId").val(id);
+
+            //获取noteContent
+            var noteContent = $("#e"+id).text();
+
+            //将noteContent赋值给模态窗口中的textarea
+            $("#noteContent")[0].value = noteContent;
+
+            //打开修改备注的模态窗口
+            $("#editRemarkModal").modal("show");
         }
 
     </script>
@@ -168,7 +211,9 @@
                     <div class="form-group">
                         <label for="edit-describe" class="col-sm-2 control-label">内容</label>
                         <div class="col-sm-10" style="width: 81%;">
-                            <textarea class="form-control" rows="3" id="noteContent"></textarea>
+                            <textarea class="form-control" rows="3" id="noteContent">
+                            <%--这里是备注的内容--%>
+                            </textarea>
                         </div>
                     </div>
                 </form>

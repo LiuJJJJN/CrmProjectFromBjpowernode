@@ -37,4 +37,13 @@
         VALUES (#{id}, #{noteContent}, #{createTime}, #{createBy}, #{editFlag}, #{activityId})
     </insert>
 
+    <update id="editRemark">
+        update crm.tbl_activity_remark
+        set noteContent = #{noteContent},
+            editTime = #{editTime},
+            editBy = #{editBy},
+            editFlag = 1
+        where id = #{id};
+    </update>
+
 </mapper>
