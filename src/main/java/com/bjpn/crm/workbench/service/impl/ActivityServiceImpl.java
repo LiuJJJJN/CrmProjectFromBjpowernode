@@ -123,4 +123,12 @@ public class ActivityServiceImpl implements ActivityService {
         }
         return false;
     }
+
+    @Override
+    public Boolean editRemark(Map<String, Object> map) {
+        if (activityRemarkDao.editRemark(map) == 1){
+            return true;
+        }
+        return false;
+    }
 }
