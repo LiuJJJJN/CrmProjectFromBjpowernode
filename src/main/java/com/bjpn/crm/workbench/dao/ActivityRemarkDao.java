@@ -31,4 +31,18 @@ public interface ActivityRemarkDao {
      * @return 备注列表
      */
     List<ActivityRemark> getRemarkListByAid(@Param("aid") String id);
+
+    /**
+     * 删除备注
+     * @param id 备注id
+     * @return 删除成功的条数
+     */
+    int deleteRemark(String id);
+
+    /**
+     * 添加备注
+     * @param ar 备注信息
+     * @return 添加成功的条数
+     */
+    int saveActivityRemark(ActivityRemark ar);
 }

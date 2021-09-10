@@ -78,6 +78,7 @@
     <select id="getDetailById" resultType="activity">
         select
             u.name as owner,
+            a.id,
             a.name,
             a.startDate,
             a.endDate,

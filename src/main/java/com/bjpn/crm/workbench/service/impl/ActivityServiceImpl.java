@@ -107,4 +107,20 @@ public class ActivityServiceImpl implements ActivityService {
         List<ActivityRemark> list = activityRemarkDao.getRemarkListByAid(id);
         return list;
     }
+
+    @Override
+    public Boolean deleteRemark(String id) {
+        if(activityRemarkDao.deleteRemark(id) == 1){
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public Boolean saveActivityRemark(ActivityRemark ar) {
+        if (activityRemarkDao.saveActivityRemark(ar) == 1){
+            return true;
+        }
+        return false;
+    }
 }

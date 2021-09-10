@@ -22,7 +22,19 @@
 
     <select id="getRemarkListByAid" resultType="activityRemark">
         select * from crm.tbl_activity_remark
-        where activityId = #{aid};
+        where activityId = #{aid}
+        order by createTime desc;
     </select>
+
+    <delete id="deleteRemark">
+        delete from crm.tbl_activity_remark
+        where id = #{id};
+    </delete>
+
+    <insert id="saveActivityRemark">
+        INSERT INTO crm.tbl_activity_remark
+            (id, noteContent, createTime, createBy, editFlag, activityId)
+        VALUES (#{id}, #{noteContent}, #{createTime}, #{createBy}, #{editFlag}, #{activityId})
+    </insert>
 
 </mapper>

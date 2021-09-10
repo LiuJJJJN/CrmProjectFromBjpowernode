@@ -2,6 +2,7 @@ package com.bjpn.crm.workbench.service;
 
 import com.bjpn.crm.vo.PaginationVO;
 import com.bjpn.crm.workbench.domain.Activity;
+import com.bjpn.crm.workbench.domain.ActivityRemark;
 
 import java.util.List;
 import java.util.Map;
@@ -56,4 +57,18 @@ public interface ActivityService {
      * @return 对应的备注列表
      */
     List getRemarkListByAid(String id);
+
+    /**
+     * 根据备注id删除备注
+     * @param id 备注id
+     * @return 删除时候成功
+     */
+    Boolean deleteRemark(String id);
+
+    /**
+     * 添加活动的备注
+     * @param ar 备注信息
+     * @return 是否添加成功
+     */
+    Boolean saveActivityRemark(ActivityRemark ar);
 }

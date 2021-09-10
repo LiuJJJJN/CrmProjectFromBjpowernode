@@ -61,27 +61,88 @@
 
             //页面加载完毕后，显示该页面的备注
             showRemarkList();
+
+            //为备注添加动画效果
+            $("#remarkBody").on("mouseover", ".remarkDiv", function () {
+                $(this).children("div").children("div").show();
+            })
+            $("#remarkBody").on("mouseout", ".remarkDiv", function () {
+                $(this).children("div").children("div").hide();
+            })
+
+            //点击备注信息的保存时
+            $("#saveBtn").click(function(){
+                $.post("workbench/activity/saveRemark.do", {
+                    "noteContent":$("#remark")[0].value,
+                    "activityId":"${a.id}"
+                }, function (resp) {
+                    /*
+                        resp:
+                            {"success":true/false
+                             "ar":{"id":xxx,"name":xxx....}
+                             }
+                     */
+                    if(resp.success){
+                        $("#remarkDiv").before('' +
+                            '<div id="'+resp.ar.id+'" class="remarkDiv" style="height: 60px;">' +
+                            '<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">' +
+                            '<div style="position: relative; top: -40px; left: 40px;">' +
+                            '<h5>' + resp.ar.noteContent + '</h5>' +
+                            '<font color="gray">市场活动</font> ' +
+                            '<font color="gray">-</font> ' +
+                            '<b>${a.name}</b> <small style="color: gray;">' + (resp.ar.createTime) + ' 由 ' + (resp.ar.createBy) + '</small>' +
+                            '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">' +
+                            '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                            '<a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+resp.ar.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>' +
+                            '</div>' +
+                            '</div>' +
+                            '</div>'
+                        );
+                        $("#remark").val("");
+                    }else{
+                        alert("删除失败！");
+                    }
+                }, "json");
+            });
+
         });
 
         //显示该页面的备注
-        function showRemarkList(){
+        function showRemarkList() {
             //使用ajax获取备注列表,更新页面备注信息
-            $.get("workbench/activity/getRemarkListByAid.do", "id=${a.id}", function (resp){
-                $.each(resp, function(i, n){
+            $.get("workbench/activity/getRemarkListByAid.do", "id=${a.id}", function (resp) {
+                $.each(resp, function (i, n) {
                     $("#remarkBefore").after('' +
-                        '<div class="remarkDiv" style="height: 60px;">' +
+                        '<div id="'+n.id+'" class="remarkDiv" style="height: 60px;">' +
                         '<img title="zhangsan" src="image/user-thumbnail.png" style="width: 30px; height:30px;">' +
                         '<div style="position: relative; top: -40px; left: 40px;">' +
-                        '<h5>'+n.noteContent+'</h5>' +
+                        '<h5>' + n.noteContent + '</h5>' +
                         '<font color="gray">市场活动</font> ' +
                         '<font color="gray">-</font> ' +
-                        '<b>${a.name}</b> <small style="color: gray;">'+(n.editFlag == 0?n.createTime:n.editTime)+' 由 '+(n.editFlag == 0?n.createBy:n.editBy)+'</small>' +
-                        '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;"><a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #E6E6E6;"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #E6E6E6;"></span></a>' +
+                        '<b>${a.name}</b> <small style="color: gray;">' + (n.editFlag == 0 ? n.createTime : n.editTime) + ' 由 ' + (n.editFlag == 0 ? n.createBy : n.editBy) + '</small>' +
+                        '<div style="position: relative; left: 500px; top: -30px; height: 30px; width: 100px; display: none;">' +
+                        '<a class="myHref" href="javascript:void(0);"><span class="glyphicon glyphicon-edit" style="font-size: 20px; color: #FF0000;"></span></a>&nbsp;&nbsp;&nbsp;&nbsp;' +
+                        '<a class="myHref" href="javascript:void(0);" onclick="deleteRemark(\''+n.id+'\')"><span class="glyphicon glyphicon-remove" style="font-size: 20px; color: #FF0000;"></span></a>' +
                         '</div>' +
                         '</div>' +
                         '</div>'
                     );
                 })
+            }, "json");
+        }
+
+        function deleteRemark(id){
+            $.post("workbench/activity/deleteRemark.do", "id="+id, function (resp) {
+                /*
+                    resp:
+                        {"success":true/false}
+                 */
+                if(resp.success){
+                    $("#"+id).remove();
+                }else{
+                    alert("删除失败！");
+                }
+
             }, "json");
         }
 
@@ -254,12 +315,12 @@
 </div>
 
 <!-- 备注 -->
-<div style="position: relative; top: 30px; left: 40px;">
+<div style="position: relative; top: 30px; left: 40px;" id="remarkBody">
     <div class="page-header" id="remarkBefore">
         <h4>备注</h4>
     </div>
 
-<%--    在此异步添加备注--%>
+    <%--    在此异步添加备注--%>
 
     <div id="remarkDiv" style="background-color: #E6E6E6; width: 870px; height: 90px;">
         <form role="form" style="position: relative;top: 10px; left: 10px;">
@@ -267,7 +328,7 @@
                       placeholder="添加备注..."></textarea>
             <p id="cancelAndSaveBtn" style="position: relative;left: 737px; top: 10px; display: none;">
                 <button id="cancelBtn" type="button" class="btn btn-default">取消</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button id="saveBtn" type="button" class="btn btn-primary">保存</button>
             </p>
         </form>
     </div>
