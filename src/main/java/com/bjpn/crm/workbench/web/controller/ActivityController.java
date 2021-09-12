@@ -30,6 +30,7 @@ public class ActivityController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
+        System.out.println();
         System.out.println(path);
         if ("/workbench/activity/getUserList.do".equals(path)){
             getUserList(request, response);

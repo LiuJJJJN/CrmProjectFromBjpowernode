@@ -30,9 +30,18 @@ public class ClueController extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         String path = request.getServletPath();
+        System.out.println();
         System.out.println(path);
-        if ("/workbench/clue/xxx.do".equals(path)) {
-            //xxx(request, response);
+        if ("/workbench/clue/getUserList.do".equals(path)) {
+            getUserList(request, response);
         }
+    }
+
+    private void getUserList(HttpServletRequest request, HttpServletResponse response) {
+        UserService service = (UserService) ServiceFactory.getService(new UserServiceImpl());
+
+        List<User> userList = service.getUserList();
+
+        PrintJson.printJsonObj(response, userList);
     }
 }
