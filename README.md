@@ -21,7 +21,7 @@
 
 ---
 ## 2021-10-17：最近学习了SSM框架，此项目将使用框架重新编写
-- 转战gitee，地址：https://gitee.com/LiuJaNing/GitTest
+- 转战gitee，地址：https://gitee.com/LiuJaNing/GitTestAndCrm/tree/crm_final/
 <br/>
 
 > 学习使人进步
